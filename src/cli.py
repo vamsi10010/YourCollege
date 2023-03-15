@@ -46,7 +46,7 @@ def askContinue():
         {"type": "confirm", "message": f'Do you want to know more?'}
     ])
 
-@click.command
+# @click.command
 def main(): 
     '''
     YourCollege CLI script for retreiving output from the trained KMeans Clusters
@@ -165,5 +165,5 @@ def main():
     console.print("----------------------\nThank you for using me <3", style="bold red")
     
     
-if __name__ == "__main__": 
-    main() 
+if __name__ == '__main__':
+    main()
