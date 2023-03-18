@@ -65,52 +65,6 @@ def main():
 
     st.session_state.weights
 
-def preferences():
-    st.session_state.sliders = False
-    st.session_state.slider_button = False
-    weights = []
-    labels = ["Total Undergraduate Enrollment",
-                "College Expenditure per Student",
-                "Percent of Student body in STEM",
-                "Female Census in the College",
-                "Acceptance Rate",
-                "Percentage of incoming students in Top 10% of HS",
-                "Graduation Rate",
-                "Diversity Index",
-                "Average SAT Score"]
-    a=st.slider(label=labels[0], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    b=st.slider(label=labels[1], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    c=st.slider(label=labels[2], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    d=st.slider(label=labels[3], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    e=st.slider(label=labels[4], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    f=st.slider(label=labels[5], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    g=st.slider(label=labels[6], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    h=st.slider(label=labels[7], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    i=st.slider(label=labels[8], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders)
-    
-    st.write("Click to confirm your preferences and proceed")
-    proceed = st.button('Continue', disabled=st.session_state.slider_button)
-    st.write(proceed)
-    while not proceed:
-        pass
-    
-    st.session_state.sliders = True
-    st.session_state.slider_button = True
-
-    return [a,b,c,d,e,f,g,h,i]
-        
-    
-        
-    
-    
+   
 if __name__ == '__main__':
     main()
