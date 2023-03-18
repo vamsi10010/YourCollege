@@ -5,8 +5,7 @@ def main():
     st.title("YourCollege - Advanced College Recommender System")
     st.write("This application uses a weighted K-means clustering model to help you find colleges similar to your dream college.")
 
-    st.subheader("Features used by model:")
-    for s in ["Total Undergraduate Enrollment",
+    labels = ["Total Undergraduate Enrollment",
                 "College Expenditure per Student",
                 "Percent of Student body in STEM",
                 "Female Census in the College",
@@ -14,7 +13,9 @@ def main():
                 "Percentage of incoming students in Top 10% of HS",
                 "Graduation Rate",
                 "Diversity Index",
-                "Average SAT Score"]:
+                "Average SAT Score"]
+    st.subheader("Features used by model:")
+    for s in labels:
         st.markdown("- " + s)
         
     st.write("Do you wish to evaluate these features upon your preference?")
@@ -24,29 +25,49 @@ def main():
     st.session_state.disabled = False
     
     if 'yes' in st.session_state or 'no' in st.session_state:
+        print("a button is in session state")
         st.session_state.disabled = True
+    else:
+        st.session_state.yes_button = False
+        st.session_state.no_button = False
     
     with col1:
         yes = st.button('Yes', disabled=st.session_state.disabled, key='yes')
     with col2:
         no = st.button('No', disabled=st.session_state.disabled, key='no')  
-        
-    weights = []    
     
-    if yes:
+    if not (st.session_state.yes_button or st.session_state.no_button):
+        st.session_state.yes_button = yes
+        st.session_state.no_button = no
+        
+    st.session_state.weights = []
+    
+    print(st.session_state.yes_button)
+    print(st.session_state.no_button)
+    
+    if st.session_state.yes_button:
         st.write("yes")
         st.session_state.disabled = False
-        cont = st.container()
-        weights = preferences(cont)
-    elif no:
+        st.session_state.sliders = False
+        st.session_state.weights = [st.slider(label=labels[i], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders) for i in range(9)]
+        print(st.session_state.weights)
+        st.write("Click to confirm your preferences and proceed")
+        proceed = st.button('Continue', disabled=st.session_state.sliders)
+        while not proceed:
+            pass
+        
+        st.session_state.sliders = True
+    elif st.session_state.no_button:
         st.write("no")
         st.session_state.disabled = False
-        weights = [1 for i in range(9)]
+        st.session_state.weights = [1 for i in range(9)]
 
-    weights
+    st.session_state.weights
 
-def preferences(cont):
+def preferences():
     st.session_state.sliders = False
+    st.session_state.slider_button = False
     weights = []
     labels = ["Total Undergraduate Enrollment",
                 "College Expenditure per Student",
@@ -57,17 +78,35 @@ def preferences(cont):
                 "Graduation Rate",
                 "Diversity Index",
                 "Average SAT Score"]
-    for i in range(9):
-        weights.append(cont.slider(label=labels[i], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders))
+    a=st.slider(label=labels[0], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    b=st.slider(label=labels[1], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    c=st.slider(label=labels[2], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    d=st.slider(label=labels[3], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    e=st.slider(label=labels[4], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    f=st.slider(label=labels[5], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    g=st.slider(label=labels[6], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    h=st.slider(label=labels[7], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
+    i=st.slider(label=labels[8], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders)
     
-    cont.write("Click to confirm your preferences and proceed")
-    proceed = cont.button('Continue', disabled=st.session_state.sliders)
+    st.write("Click to confirm your preferences and proceed")
+    proceed = st.button('Continue', disabled=st.session_state.slider_button)
+    st.write(proceed)
     while not proceed:
         pass
     
     st.session_state.sliders = True
-    return weights
+    st.session_state.slider_button = True
+
+    return [a,b,c,d,e,f,g,h,i]
         
     
         
