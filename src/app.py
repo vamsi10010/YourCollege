@@ -1,11 +1,12 @@
 import streamlit as st
-import kmeans_model
+import kmeans_model as kmeans
 
 def main():
     st.title("YourCollege - Advanced College Recommender System")
     st.write("This application uses a weighted K-means clustering model to help you find colleges similar to your dream college.")
 
-    labels = ["Total Undergraduate Enrollment",
+    labels = ["Type of College (Public or Private)",
+                "Total Undergraduate Enrollment",
                 "College Expenditure per Student",
                 "Percent of Student body in STEM",
                 "Female Census in the College",
@@ -23,6 +24,9 @@ def main():
     col1, col2 = st.columns([0.1,1])
     
     st.session_state.disabled = False
+    
+    if 'start_model' not in st.session_state:
+        st.session_state.start_model = False
     
     if 'yes' in st.session_state or 'no' in st.session_state:
         print("a button is in session state")
@@ -48,22 +52,66 @@ def main():
     if st.session_state.yes_button:
         st.write("yes")
         st.session_state.disabled = False
-        st.session_state.sliders = False
-        st.session_state.weights = [st.slider(label=labels[i], min_value=1, max_value=10, value=5, step=1,
-                                   disabled=st.session_state.sliders) for i in range(9)]
-        print(st.session_state.weights)
-        st.write("Click to confirm your preferences and proceed")
-        proceed = st.button('Continue', disabled=st.session_state.sliders)
-        while not proceed:
-            pass
         
-        st.session_state.sliders = True
+        if 'sliders' not in st.session_state:
+            st.session_state.sliders = False
+                  
+        if 'cont' not in st.session_state:
+            st.session_state.cont_button = False
+        else:
+            if st.session_state.cont_button:
+                st.session_state.sliders = True
+        
+        st.session_state.weights = [st.slider(label=labels[i], min_value=1, max_value=10, value=5, step=1,
+                                   disabled=st.session_state.sliders) for i in range(10)]
+        
+        st.write("Click to confirm your preferences and proceed")
+            
+        st.session_state.cont_button = st.button('Continue', disabled=st.session_state.sliders, key = 'cont')
+        
+        if st.session_state.cont_button:
+            st.session_state.start_model = True
+            st.experimental_rerun()
+        
+        print("sliders: " + str(st.session_state.sliders))
+        print(st.session_state.weights)
     elif st.session_state.no_button:
         st.write("no")
         st.session_state.disabled = False
-        st.session_state.weights = [1 for i in range(9)]
+        st.session_state.start_model = True
+        st.session_state.weights = [1 for i in range(10)]
 
     st.session_state.weights
+    
+    print("start model: " + str(st.session_state.start_model))
+    
+    if 'colleges' not in st.session_state:
+        st.session_state.colleges = None
+    
+    if 'output' not in st.session_state:
+        st.session_state.output = None
+    
+    if 'get_output' not in st.session_state:
+        st.session_state.get_output = False
+        
+    if 'dream' not in st.session_state:
+        st.session_state.dream = ''
+
+    
+    if st.session_state.start_model:
+        st.session_state.colleges = kmeans.train(st.session_state.weights)
+        st.session_state.start_model = False
+        st.session_state.get_output = True
+        
+        #TODO - print out names
+        
+    if st.session_state.get_output:
+        st.session_state.dream = st.selectbox("Choose your dream college:", options=st.session_state.colleges)
+        
+        st.session_state.output = kmeans.find_colleges(st.session_state.colleges, st.session_state.dream)
+        
+        st.experimental_data_editor(st.session_state.output, disabled=True)
+        
 
    
 if __name__ == '__main__':
