@@ -9,7 +9,7 @@ We have collected data sets about the different colleges in the U.S, their accep
 - https://www.kaggle.com/datasets/yashgpt/us-college-data
 - https://nces.ed.gov/ipeds/use-the-data
 
-The user interface is built and hosted on Streamlit.
+The user interface is built and hosted on Streamlit: https://vamsi10010-yourcollege-srcapp-jtmq7r.streamlit.app/
 
 ### Contributors
 YourCollege began as a hackathon idea for BoilerMake 2023 at Purdue University. Since then, we have upgraded the application from a command-line interface to a complete graphical user interface hosted on Streamlit. 
