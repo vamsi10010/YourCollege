@@ -2,11 +2,12 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
+from pathlib import Path
 
 # Trains model with provided weights. Default weights are set to 1 each.
 # Returns pandas dataframe of the colleges with clusters
 def train(weights=[1 for i in range(0,10)]):
-    data = pd.read_csv('data/FINALDATA.csv')
+    data = pd.read_csv(str(Path(__file__).parents[1]) + '/data/FINALDATA.csv')
     
     drop_cols = ['SAT25', 'SAT75', 'Top25perc','Top25perc','Outstate', 'Room.Board', 'Books',
         'Personal','PhD', 'Terminal', 'S.F.Ratio', 'perc.alumni','rank', 'state_name', 'early_career_pay', 'mid_career_pay',
@@ -51,7 +52,7 @@ def train(weights=[1 for i in range(0,10)]):
 # Takes dataframe of colleges and name of college as arguments and returns a dataframe of similar colleges
 # Returns pandas dataframe of similar colleges
 def find_colleges(colleges, name):
-    data = pd.read_csv('../predictions/college_recs.csv')
+    data = pd.read_csv(str(Path(__file__).parents[1]) + '/predictions/college_recs.csv')
     cluster = colleges.loc[colleges['NAME'] == name,['kmeans_cluster']].iloc[0][0]
     output = colleges.loc[colleges['kmeans_cluster'] == cluster]
     [i] = colleges.loc[colleges['NAME'] == name].index
