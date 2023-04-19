@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 # Trains model with provided weights. Default weights are set to 1 each.
 # Returns pandas dataframe of the colleges with clusters
 def train(weights=[1 for i in range(0,10)]):
-    data = pd.read_csv('../data/FINALDATA.csv')
+    data = pd.read_csv('data/FINALDATA.csv')
     
     drop_cols = ['SAT25', 'SAT75', 'Top25perc','Top25perc','Outstate', 'Room.Board', 'Books',
         'Personal','PhD', 'Terminal', 'S.F.Ratio', 'perc.alumni','rank', 'state_name', 'early_career_pay', 'mid_career_pay',

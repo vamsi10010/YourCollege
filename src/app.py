@@ -50,7 +50,7 @@ def main():
     print(st.session_state.no_button)
     
     if st.session_state.yes_button:
-        st.write("yes")
+        # st.write("yes")
         st.session_state.disabled = False
         
         if 'sliders' not in st.session_state:
@@ -76,12 +76,10 @@ def main():
         print("sliders: " + str(st.session_state.sliders))
         print(st.session_state.weights)
     elif st.session_state.no_button:
-        st.write("no")
+        # st.write("no")
         st.session_state.disabled = False
         st.session_state.start_model = True
         st.session_state.weights = [1 for i in range(10)]
-
-    st.session_state.weights
     
     print("start model: " + str(st.session_state.start_model))
     
@@ -103,16 +101,18 @@ def main():
         st.session_state.start_model = False
         st.session_state.get_output = True
         
-        #TODO - print out names
-        
     if st.session_state.get_output:
         st.session_state.dream = st.selectbox("Choose your dream college:", options=st.session_state.colleges)
         
         st.session_state.output = kmeans.find_colleges(st.session_state.colleges, st.session_state.dream)
+        st.session_state.output['College Type'] = ['Private' if s == 1 else 'Public' for s in st.session_state.output['Private']]
+        st.session_state.output['Full-time Undergraduates'] = st.session_state.output['F.Undergrad']
+        st.session_state.output['Average SAT'] = st.session_state.output['SAT%'] * 1600
+        st.session_state.output['Acceptance Rate'] = round(st.session_state.output['acceptance_rate'] * 100, 2)
+        st.session_state.output['Graduation Rate'] = round(st.session_state.output['grad_rate'] * 100, 2)
         
-        st.experimental_data_editor(st.session_state.output, disabled=True)
         
-
+        st.experimental_data_editor(st.session_state.output[['NAME', 'College Type', 'Full-time Undergraduates', 'Average SAT', 'Acceptance Rate', 'Graduation Rate']], disabled=True)
    
 if __name__ == '__main__':
     main()
