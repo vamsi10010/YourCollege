@@ -35,7 +35,7 @@ def train(weights=[1 for i in range(0,10)]):
     features = ['Private', 'F.Undergrad', 'Expend', 'stem_percent', 'Women',
        'acceptance_rate', 'top10', 'grad_rate', 'diversity_score', 'SAT%']
     
-    colleges.to_csv('../predictions/college_recs.csv', index=False)
+    colleges.to_csv(str(Path(__file__).parents[1]) + '/predictions/college_recs.csv', index=False)
    
     for i in range(0,10):
         colleges[features[i]] = weights[i] * colleges[features[i]]
